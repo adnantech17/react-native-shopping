@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Modal from 'react-native-modal';
@@ -12,59 +12,40 @@ import styles from './menuModalStyles';
 
 // eslint-disable-next-line no-shadow
 function MenuModal({menu, toggleMenu, setFilter}) {
-  const data = [
-    {
-      name: 'Men',
-      icon: 'male',
-      tag: 'men',
-      children: [
-        {
-          name: 'Shoes',
-          icon: 'shoe-prints',
-          tag: 'men-shoe',
-        },
-        {
-          name: 'Cloths',
-          icon: 'user-graduate',
-          tag: 'men-cloths',
-          children: [
-            {
-              name: 'Jackets',
-              icon: 'user-secret',
-              tag: 'men-jackets',
-            },
-            {
-              icon: 'tshirt',
-              name: 'Tshirts',
-              tag: 'men-tshirts',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      name: 'Women',
-      icon: 'female',
-      tag: 'women',
-      children: [
-        {
-          icon: 'shoe-prints',
-          name: 'Shoes',
-          tag: 'women-shoes',
-        },
-        {
-          icon: 'user-graduate',
-          name: 'Cloths',
-          tag: 'women-cloths',
-        },
-        {
-          name: 'Hats',
-          icon: 'hat-cowboy-side',
-          tag: 'women-hats',
-        },
-      ],
-    },
-  ];
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    fetch('https://crantech-ecommerce.herokuapp.com/category/get')
+      .then(res => res.json())
+      .then(data => list_to_tree(data.data))
+      .catch(err => console.log(err));
+  }, []);
+
+  function list_to_tree(list) {
+    var map = {},
+      node,
+      roots = [],
+      i;
+    for (i = 0; i < list.length; i += 1) {
+      map[list[i]._id] = i;
+    }
+
+    for (i = 0; i < list.length; i += 1) {
+      node = list[i];
+      if (node.parent_id !== null) {
+        if (list[map[node.parent_id]].children) {
+          list[map[node.parent_id]].children.push(node);
+        } else {
+          list[map[node.parent_id]].children = [];
+          list[map[node.parent_id]].children.push(node);
+        }
+      } else {
+        roots.push(node);
+      }
+    }
+    setCategories(roots);
+    return roots;
+  }
   return (
     <Modal
       isVisible={menu}
@@ -81,11 +62,11 @@ function MenuModal({menu, toggleMenu, setFilter}) {
       <View style={styles.scrollableModal}>
         <View style={{marginTop: 20}}>
           <NestedListView
-            data={data}
+            data={categories}
             getChildrenName={() => 'children'}
             onNodePressed={node => {
               if (!node.children) {
-                setFilter({name: node.name, tag: node.tag});
+                setFilter({name: node.name, id: node._id});
                 toggleMenu();
               }
             }}
@@ -96,17 +77,10 @@ function MenuModal({menu, toggleMenu, setFilter}) {
                 style={styles.nestedRow}>
                 <TouchableOpacity
                   onPress={() => {
-                    setFilter({name: node.name, tag: node.tag});
+                    setFilter({name: node.name, id: node._id});
                     toggleMenu();
                   }}
                   style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Icon
-                    name={node.icon}
-                    size={18}
-                    style={
-                      node.opened === true ? styles.selectedText : styles.text
-                    }
-                  />
                   <Text
                     style={
                       node.opened === true ? styles.selectedText : styles.text

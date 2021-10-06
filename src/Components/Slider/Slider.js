@@ -10,12 +10,7 @@ export default class extends Component {
     this.swiper = React.createRef();
     this.state = {index: 0};
   }
-  images = [
-    'https://i.ibb.co/w4k6Ws9/nike-funky.png',
-    'https://i.ibb.co/w4k6Ws9/nike-funky.png',
-    'https://i.ibb.co/w4k6Ws9/nike-funky.png',
-    'https://i.ibb.co/w4k6Ws9/nike-funky.png',
-  ];
+  images = this.props.images;
 
   render() {
     return (

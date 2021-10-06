@@ -32,7 +32,6 @@ export default class extends Component {
           style={styles.buttonsLeft}
           onPress={() => {
             this.swiper.current.scrollBy(-1);
-            console.log(this.swiper.current.scrollBy);
           }}>
           <Icon name="angle-left" size={40} color="green" />
         </TouchableOpacity>
@@ -40,7 +39,6 @@ export default class extends Component {
           style={styles.buttonsRight}
           onPress={() => {
             this.swiper.current.scrollBy(1);
-            console.log(this.swiper.current.scrollBy);
           }}>
           <Icon name="angle-right" size={40} color="green" />
         </TouchableOpacity>

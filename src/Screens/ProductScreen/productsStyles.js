@@ -23,4 +23,5 @@ export default StyleSheet.create({
     borderRadius: 30,
     padding: 12,
   },
+  flatlist: {height: '100%'},
 });

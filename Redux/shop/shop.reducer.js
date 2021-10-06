@@ -1,8 +1,7 @@
-import SHOP_DATA from './shopdata';
-
 const INITIAL_STATE = {
   productDescription: false,
-  collections: SHOP_DATA,
+  collections: [],
+  categories: [],
   menu: false,
   selectedItem: {
     id: 1,
@@ -24,11 +23,22 @@ const shopReducer = (state = INITIAL_STATE, action) => {
         ...state,
         selectedItem: action.payload,
       };
+    case 'SET_COLLECTIONS':
+      return {
+        ...state,
+        collections: action.payload,
+      };
     case 'TOGGLE_MENU':
       return {
         ...state,
         menu: !state.menu,
       };
+    case 'SET_CATEGORIES':
+      return {
+        ...state,
+        categories: action.payload,
+      };
+
     default:
       return state;
   }

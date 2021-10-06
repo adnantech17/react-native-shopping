@@ -16,6 +16,7 @@ function CartModal({
   addToCart,
   removeFromCart,
   cartItems,
+  categories,
 }) {
   const findItem = () => {
     const existingCartItem = cartItems.find(
@@ -33,6 +34,16 @@ function CartModal({
   };
 
   const foundItem = findItem();
+  const photos = item.photo
+    ? item.photo
+    : [
+        'https://st4.depositphotos.com/14953852/24787/v/600/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg',
+      ];
+
+  const categoryName = id => {
+    return categories.find(cat => cat._id === id).name;
+  };
+
   return (
     <Modal
       isVisible={productDes}
@@ -48,22 +59,13 @@ function CartModal({
       />
       <View style={styles.scrollableModal}>
         <ScrollView>
-          <Slider />
+          <Slider images={photos} />
           <View style={styles.infoContainer}>
             <Text style={styles.title}>{item?.name}</Text>
-            <Text style={styles.subtitle}>1 pc(s)</Text>
-            <Text style={styles.description}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-              congue quam sit amet turpis semper, porttitor finibus dui egestas.
-              Integer ac gravida arcu. Pellentesque id augue ac odio iaculis
-              semper. Pellentesque habitant morbi tristique senectus et netus et
-              malesuada fames ac turpis egestas. Donec vulputate ac erat at
-              eleifend. Etiam molestie augue non neque feugiat, eget gravida
-              velit vulputate. Quisque porta nisl eget turpis pulvinar
-              pellentesque. Vivamus a accumsan mi.
-            </Text>
+            <Text style={styles.subtitle}>{item.unit}</Text>
+            <Text style={styles.description}>{item?.description}</Text>
             <View style={styles.price}>
-              <Text style={styles.priceText}>${item?.price}</Text>
+              <Text style={styles.priceText}>{item?.price}৳</Text>
               {foundItem === undefined ? (
                 <Icon
                   name="shopping-bag"
@@ -79,6 +81,14 @@ function CartModal({
                 />
               )}
             </View>
+
+            <View style={styles.categories}>
+              {item.category_id.map(id => (
+                <Text style={styles.category} key={id}>
+                  {categoryName(id)}
+                </Text>
+              ))}
+            </View>
           </View>
         </ScrollView>
       </View>
@@ -90,6 +100,7 @@ const mapStateToProps = state => ({
   productDes: state.shop.productDescription,
   item: state.shop.selectedItem,
   cartItems: state.cart.cartItems,
+  categories: state.shop.categories,
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -17,6 +17,7 @@ const Product = ({
   removeFromCart,
   toggleDes,
   setSelectedItem,
+  categories,
 }) => {
   const findItem = () => {
     const existingCartItem = cartItems.find(
@@ -33,6 +34,10 @@ const Product = ({
     removeFromCart({...item, quantity: 0});
   };
 
+  const photo = item.photo
+    ? item.photo[0]
+    : 'https://st4.depositphotos.com/14953852/24787/v/600/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg';
+
   const foundItem = findItem();
   return (
     <TouchableOpacity
@@ -43,12 +48,12 @@ const Product = ({
       style={styles.item}>
       <View>
         <View style={styles.image}>
-          <Image source={{uri: item.imageUrl, width: 150, height: 200}} />
+          <Image source={{uri: photo, width: 150, height: 200}} />
         </View>
         <Text>{item.name}</Text>
         <Text>1 pc(s)</Text>
         <View style={styles.price}>
-          <Text>${item.price}</Text>
+          <Text>{item.price}৳</Text>
           {foundItem === undefined ? (
             <Icon
               name="shopping-bag"

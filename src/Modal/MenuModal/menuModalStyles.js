@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 
-StyleSheet.create({
+export default StyleSheet.create({
   cross: {
     textAlign: 'center',
     marginBottom: 20,
@@ -37,5 +37,6 @@ StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    borderBottomWidth: 1,
   },
 });

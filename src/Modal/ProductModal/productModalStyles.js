@@ -64,4 +64,15 @@ export default StyleSheet.create({
     fontSize: 20,
     color: 'white',
   },
+  categories: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+
+  category: {
+    padding: 8,
+    backgroundColor: 'green',
+    marginRight: 6,
+    borderRadius: 4,
+  },
 });
