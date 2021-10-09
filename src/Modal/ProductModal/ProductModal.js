@@ -83,7 +83,7 @@ function CartModal({
             </View>
 
             <View style={styles.categories}>
-              {item.category_id.map(id => (
+              {item.category_id?.map(id => (
                 <Text style={styles.category} key={id}>
                   {categoryName(id)}
                 </Text>
